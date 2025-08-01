@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Видалити бронювання</h2>
+<p>Ви впевнені, що хочете видалити бронювання кімнати №{{ object.room.number }} з {{ object.start_time|date:"d.m.Y H:i" }} до {{ object.end_time|date:"d.m.Y H:i" }}?</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Так, видалити</button>
+  <a href="{% url 'my-bookings' %}" class="btn btn-secondary">Скасувати</a>
+</form>
+{% endblock %}

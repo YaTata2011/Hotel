@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <!-- Виведення повідомлень -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрити"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <h2 class="mb-4 text-center">Форма бронювання кімнати</h2>
+
+  <form method="POST" action="{% url 'book-room' %}" class="mx-auto" style="max-width: 500px;">
+    {% csrf_token %}
+
+    <!-- Вибір кімнати -->
+    <div class="mb-3">
+      <label for="room-number" class="form-label">Оберіть кімнату:</label>
+      <select name="room-number" id="room-number" class="form-select" required>
+        {% for room in rooms %}
+          <option value="{{ room.id }}" {% if selected_room_id|default:'' == room.id|stringformat:'s' %}selected{% endif %}>
+            Кімната №{{ room.number }} (місткість: {{ room.capacity }})
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Дата заїзду -->
+    <div class="mb-3">
+      <label for="start-time" class="form-label">Дата і час заїзду:</label>
+      <input type="datetime-local" id="start-time" name="start-time" class="form-control" required>
+    </div>
+
+    <!-- Дата виїзду -->
+    <div class="mb-3">
+      <label for="end-time" class="form-label">Дата і час виїзду:</label>
+      <input type="datetime-local" id="end-time" name="end-time" class="form-control" required>
+    </div>
+
+    <!-- Кнопка -->
+    <button type="submit" class="btn btn-primary w-100">Забронювати кімнату</button>
+  </form>
+</div>
+{% endblock %}

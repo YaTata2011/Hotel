@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">Мої бронювання</h2>
+
+  {% if bookings %}
+    <table class="table table-bordered table-hover">
+      <thead class="table-primary">
+        <tr>
+          <th>Кімната</th>
+          <th>Період бронювання</th>
+          <th>Кількість днів</th> <!-- ✅ назва залишилась -->
+          <th>Ціна за добу (₴)</th>
+          <th>Сума за бронювання (₴)</th>
+          <th>Дії</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in bookings %}
+        <tr>
+          <td>№{{ booking.room.number }}</td>
+          <td>
+            {{ booking.start_time|date:"d.m.Y H:i" }}<br>
+            — {{ booking.end_time|date:"d.m.Y H:i" }}
+          </td>
+          <td>{{ booking.duration_days }}</td> 
+          <td>{{ booking.room.price_per_day }}</td>
+          <td>{{ booking.total_price }}</td>
+          <td>
+            <a href="{% url 'edit-booking' booking.id %}" class="btn btn-sm btn-outline-primary">Редагувати</a>
+            <a href="{% url 'delete-booking' booking.id %}" class="btn btn-sm btn-outline-danger">Видалити</a>
+            <a href="{% url 'checkout' booking.id %}" class="btn btn-success btn-sm">Оплатити</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- ✅ Загальна сума -->
+    <div class="text-end mt-3">
+      <h5><strong>Загальна сума всіх бронювань:</strong> {{ total_sum }} ₴</h5>
+    </div>
+
+  {% else %}
+    <p class="text-center">У вас поки немає бронювань.</p>
+  {% endif %}
+</div>
+{% endblock %}

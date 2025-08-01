@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <!-- Кнопка Вийти  -->
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col text-end">
+        {% if user.is_authenticated %}
+          <form action="{% url 'logout' %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger btn-sm">Вийти</button>
+          </form>
+        
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+<!-- Фонова секція з привітанням -->
+<div class="bg-image text-white p-5 rounded shadow" style="
+    background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');
+    background-size: cover;
+    background-position: center;
+    min-height: 400px;
+    position: relative;
+">
+  <div class="bg-dark bg-opacity-50 h-100 d-flex flex-column justify-content-center align-items-center rounded">
+    <h1 class="display-4 fw-bold">Ласкаво просимо до нашого готелю</h1>
+    <h1 class="display-4 fw-bold"> "Сонячний Берег"</h1>
+    <p class="lead">Тут комфорт і затишок стають вашою реальністю 🌿</p>
+    <div class="mt-4">
+      <a href="{% url 'rooms-list' %}" class="btn btn-light btn-lg me-2">Переглянути кімнати</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'book-room' %}" class="btn btn-outline-light btn-lg">Забронювати зараз</a>
+      {% else %}
+        <a class="btn btn-outline-light btn-lg" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Забронювати зараз</a>
+      {% endif %}  
+    </div>
+  </div>
+</div>
+
+<!-- Відео-презентація готелю -->
+<div class="mt-5 text-center">
+  {% if room.video %}
+    <h3 class="mb-3">Відео нашого готелю</h3>
+    <video width="640" controls class="rounded shadow">
+      <source src="{{ room.video.url }}" type="video/mp4">
+      Ваш браузер не підтримує відео.
+    </video>
+  {% else %}
+    <p class="text-muted">Немає відео для цього готелю.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

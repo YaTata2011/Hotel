@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+  <h3> Введіть номер телефону для завершення доступу</h3>
+  <form method = "post">
+    {% csrf_token %}
+    <input type = "text" name = "phone" class="form-control mb-2" placeholder="+380..." required>
+    <button type = "submit" class = "btn btn-ptymary"> Зберегти </button>
+  </form>
+</div>
+
+{% endblock %}
